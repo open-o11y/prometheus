@@ -1,0 +1,32 @@
+name: ci
+
+on: [push, schedule]
+  - cron: '0 0 * * *'
+
+jobs:
+
+  test:
+    runs-on: circleci/golang:1.15-node
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - run: make promu
+      - name: restore v1 cache
+        uses: actions/cache@v2
+        with:
+          key: 'v1-{{ arch }}-{{ checksum "go.sum"  }}'
+      - name: v3-npm-deps yarnlock
+        uses: actions/cache@v2
+        with:
+          key: 'v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}'
+      - name: v3-npm-deps
+        uses: actions/cache@v2
+        with:
+          key: 'v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}'
+      - run: make
+        env: 
+          GOGC: "20"
+          GOOPTS: "-p 2"
+          GOMAXPROCS: "2"
+      - name: prometheus/check_proto
+        run: 
