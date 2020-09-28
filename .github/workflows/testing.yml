@@ -1,6 +1,7 @@
 name: ci
 
-on: [push schedule]
+on: [push, pull_request]
+  schedule:
   - cron: '0 0 * * *'
 
 jobs:
@@ -29,4 +30,12 @@ jobs:
           GOOPTS: "-p 2"
           GOMAXPROCS: "2"
       - name: prometheus/check_proto
-        run: 
+        run: curl -s -L \
+          https://github.com/protocolbuffers/protobuf/releases/download/v<<
+          parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
+          unzip -d /tmp /tmp/protoc.zip
+          chmod +x /tmp/bin/protoc
+          echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
+          source $BASH_ENV
+          make proto
+          git diff --exit-code
