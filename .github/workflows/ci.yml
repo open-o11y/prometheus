@@ -69,4 +69,6 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - run: "test"
+      - name: "update golang"
+        run: choco upgrade -y golang
+        shell: bash
