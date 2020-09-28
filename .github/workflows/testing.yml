@@ -21,7 +21,7 @@ jobs:
       - name: make promu
         run: make promu
       - name: cache Go modules
-        uses: actions/cache@preview
+        uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
           key: v1-{{ arch }}-{{ checksum "go.sum" }}
@@ -45,6 +45,7 @@ jobs:
         env:
           VERSION: 3.12.3
         run: |
+          echo $USER
           curl -s -L \
           https://github.com/protocolbuffers/protobuf/releases/download/v${VERSION}/protoc-${VERSION}-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
