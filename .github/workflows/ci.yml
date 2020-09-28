@@ -66,5 +66,9 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v2
       - name: "update golang"
+        # windows-latest comes with Go 1.14.9, not Go 1.15
         run: choco upgrade -y golang
+        shell: bash
+      - name: change directory to project root
+        run: cd /go/src/github.com/prometheus/prometheus
         shell: bash
