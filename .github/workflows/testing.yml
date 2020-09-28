@@ -36,16 +36,15 @@ jobs:
           path: ~/.npm
           key: v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}
           restore-keys: v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}
-      # - run: make
-      #   env:
-      #     GOGC: "20"
-      #     GOOPTS: "-p 2"
-      #     GOMAXPROCS: "2"
+      - run: make
+        env:
+          GOGC: "20"
+          GOOPTS: "-p 2"
+          GOMAXPROCS: "2"
       - name: prometheus/check_proto
         env:
           VERSION: 3.12.3
         run: |
-          echo $USER
           curl -s -L \
           https://github.com/protocolbuffers/protobuf/releases/download/v${VERSION}/protoc-${VERSION}-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
