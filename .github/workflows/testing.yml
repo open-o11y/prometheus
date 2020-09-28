@@ -45,7 +45,6 @@ jobs:
           sudo chmod +x /tmp/bin/protoc
           echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
           source $BASH_ENV
-          make proto
       - name: prometheus/store_artifact prometheus
         uses: actions/upload-artifact@v2
         with:
