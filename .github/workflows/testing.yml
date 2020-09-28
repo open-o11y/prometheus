@@ -3,7 +3,7 @@ name: ci
 on:
   schedule:
   - cron: '0 0 * * *'
-  push:
+  push: # REMOVE
   pull_request:
 
 jobs:
@@ -15,31 +15,31 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - run: make promu
-      - name: restore v1 cache
-        uses: actions/cache@v2
-        with:
-          key: 'v1-{{ arch }}-{{ checksum "go.sum"  }}'
-      - name: v3-npm-deps yarnlock
-        uses: actions/cache@v2
-        with:
-          key: 'v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}'
-      - name: v3-npm-deps
-        uses: actions/cache@v2
-        with:
-          key: 'v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}'
-      - run: make
-        env: 
-          GOGC: "20"
-          GOOPTS: "-p 2"
-          GOMAXPROCS: "2"
-      - name: prometheus/check_proto
-        run: curl -s -L \
-          https://github.com/protocolbuffers/protobuf/releases/download/v<<
-          parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
-          unzip -d /tmp /tmp/protoc.zip
-          chmod +x /tmp/bin/protoc
-          echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
-          source $BASH_ENV
-          make proto
-          git diff --exit-code
+      # - run: make promu
+      # - name: restore v1 cache
+      #   uses: actions/cache@v2
+      #   with:
+      #     key: 'v1-{{ arch }}-{{ checksum "go.sum"  }}'
+      # - name: v3-npm-deps yarnlock
+      #   uses: actions/cache@v2
+      #   with:
+      #     key: 'v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}'
+      # - name: v3-npm-deps
+      #   uses: actions/cache@v2
+      #   with:
+      #     key: 'v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}'
+      # - run: make
+      #   env: 
+      #     GOGC: "20"
+      #     GOOPTS: "-p 2"
+      #     GOMAXPROCS: "2"
+      # - name: prometheus/check_proto
+      #   run: curl -s -L \
+      #     https://github.com/protocolbuffers/protobuf/releases/download/v<<
+      #     parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
+      #     unzip -d /tmp /tmp/protoc.zip
+      #     chmod +x /tmp/bin/protoc
+      #     echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
+      #     source $BASH_ENV
+      #     make proto
+      #     git diff --exit-code
