@@ -43,7 +43,9 @@ jobs:
           curl -s -L https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
           chmod +x /tmp/bin/protoc
-          echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
+          echo 'export PATH=/tmp/bin:$PATH'
+          echo 'gang=$PATH'
+          make proto
       - name: prometheus/store_artifact prometheus
         uses: actions/upload-artifact@v2
         with:
