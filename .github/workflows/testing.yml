@@ -20,11 +20,13 @@ jobs:
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
-      - name: restore v1 cache
+      - name: restore go v1 cache
         uses: actions/cache@v2
         with:
-          path: .
-          key: 'v1-{{ arch }}-{{ checksum "go.sum"  }}'
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
       # - name: v3-npm-deps yarnlock
       #   uses: actions/cache@v2
       #   with:
