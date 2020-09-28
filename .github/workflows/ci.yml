@@ -8,7 +8,6 @@ on:
   pull_request:
 
 jobs:
-
   # test:
   #   runs-on: ubuntu-latest
   #   container:
@@ -61,7 +60,6 @@ jobs:
   #       with:
   #         name: promtool
   #         path: promtool
-
   test_windows:
     runs-on: windows-latest
     defaults:
