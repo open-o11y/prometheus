@@ -49,9 +49,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: prometheus
-          path: /build/prometheus
+          path: prometheus
       - name: prometheus/store_artifact promtool
         uses: actions/upload-artifact@v2
         with:
           name: promtool
-          path: /build/promtool
+          path: promtool
