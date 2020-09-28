@@ -43,7 +43,7 @@ jobs:
           curl -s -L https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
           chmod +x /tmp/bin/protoc
-          echo "::add-path::/tmp/bin"
+          echo "::add-path::/tmp/bin/protoc"
           make proto
       - name: prometheus/store_artifact prometheus
         uses: actions/upload-artifact@v2
