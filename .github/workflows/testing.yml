@@ -35,19 +35,19 @@ jobs:
           path: ~/.npm
           key: v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}
           restore-keys: v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}
-      # - run: make
-      #   env: 
-      #     GOGC: "20"
-      #     GOOPTS: "-p 2"
-      #     GOMAXPROCS: "2"
-      # - name: prometheus/check_proto
-      #   run: |
-      #     curl -s -L \
-      #     https://github.com/protocolbuffers/protobuf/releases/download/v<<
-      #     parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
-      #     unzip -d /tmp /tmp/protoc.zip
-      #     chmod +x /tmp/bin/protoc
-      #     echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
-      #     source $BASH_ENV
-      #     make proto
-      #     git diff --exit-code
+      - run: make
+        env:
+          GOGC: "20"
+          GOOPTS: "-p 2"
+          GOMAXPROCS: "2"
+      - name: prometheus/check_proto
+        run: |
+          curl -s -L \
+          https://github.com/protocolbuffers/protobuf/releases/download/v<<
+          parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
+          unzip -d /tmp /tmp/protoc.zip
+          chmod +x /tmp/bin/protoc
+          echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
+          source $BASH_ENV
+          make proto
+          git diff --exit-code
