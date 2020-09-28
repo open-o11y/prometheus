@@ -10,7 +10,6 @@ on:
 jobs:
 
   test:
-    runs-on: ubuntu-latest
     container:
       image: circleci/golang:1.15-node
     steps:
@@ -24,7 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: v1-{{ arch }}-{{ checksum "go.sum"  }}
           restore-keys: |
             ${{ runner.os }}-go-
       # - name: v3-npm-deps yarnlock
