@@ -66,7 +66,7 @@ jobs:
       run:
         shell: bash
         working-directory: /go/src/github.com/prometheus/prometheus
-    - steps:
+    steps:
       - name: checkout repo
         uses: actions/checkout@v2
       - run: choco upgrade -y golang
