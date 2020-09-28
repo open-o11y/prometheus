@@ -3,7 +3,8 @@ name: ci
 on:
   schedule:
   - cron: '0 0 * * *'
-  push: # REMOVE
+  push:
+    # branches: [ master ]
   pull_request:
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
       - name: restore v1 cache
         uses: actions/cache@v2
         with:
-          path: ~/
+          path: .
           key: 'v1-{{ arch }}-{{ checksum "go.sum"  }}'
       # - name: v3-npm-deps yarnlock
       #   uses: actions/cache@v2
@@ -38,7 +39,8 @@ jobs:
       #     GOOPTS: "-p 2"
       #     GOMAXPROCS: "2"
       # - name: prometheus/check_proto
-      #   run: curl -s -L \
+      #   run: |
+      #     curl -s -L \
       #     https://github.com/protocolbuffers/protobuf/releases/download/v<<
       #     parameters.version >>/protoc-<< parameters.version >>-linux-x86_64.zip > /tmp/protoc.zip
       #     unzip -d /tmp /tmp/protoc.zip
