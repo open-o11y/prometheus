@@ -11,9 +11,11 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    container:
-      image: golang:1.15.2
     steps:
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+        go-version: ‘1.15.0’
       - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: checkout repo
@@ -42,7 +44,7 @@ jobs:
         run: |
           curl -s -L https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
-          chmod +x /tmp/bin/protoc
+          sudo chmod +x /tmp/bin/protoc
           echo 'export PATH=/tmp/bin:$PATH' >> $BASH_ENV
           source $BASH_ENV
           make proto
