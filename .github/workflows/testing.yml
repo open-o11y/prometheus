@@ -20,27 +20,22 @@ jobs:
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
-      - name: cache Go modules
+      - name: load go modules cache
         uses: actions/cache@v2
         with:
-          path: ~/go/pkg/mod
+          path: /home/circleci/go/pkg/mod
           key: v1-{{ arch }}-{{ checksum "go.sum" }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}
-            ${{ runner.OS }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-build-
-            ${{ runner.OS }}-
-      - name: v3-npm-deps yarnlock
+      - name: load yarn cache
         uses: actions/cache@v2
         with:
-          path: ~/.npm
+          path: /home/circleci/.cache/yarn
           key: v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}
           restore-keys: v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}
-      - run: make
-        env:
-          GOGC: "20"
-          GOOPTS: "-p 2"
-          GOMAXPROCS: "2"
+      # - run: make
+      #   env:
+      #     GOGC: "20"
+      #     GOOPTS: "-p 2"
+      #     GOMAXPROCS: "2"
       - name: prometheus/check_proto
         env:
           VERSION: 3.12.3
@@ -53,3 +48,13 @@ jobs:
           source $BASH_ENV
           make proto
           git diff --exit-code
+      - name: prometheus/store_artifact prometheus
+        uses: actions/upload-artifact@v2
+        with:
+          name: prometheus
+          path: /build/prometheus
+      - name: prometheus/store_artifact promtool
+        uses: actions/upload-artifact@v2
+        with:
+          name: promtool
+          path: /build/promtool
