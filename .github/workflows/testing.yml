@@ -9,7 +9,9 @@ on:
 jobs:
 
   test:
-    runs-on: circleci/golang:1.15-node
+    runs-on: ubuntu-latest
+    container:
+      image: circleci/golang:1.15-node
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
