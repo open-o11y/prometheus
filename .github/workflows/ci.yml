@@ -69,5 +69,5 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - run: echo "$(pwd)"
+      - run: echo "hello"
       - run: choco upgrade -y golang
