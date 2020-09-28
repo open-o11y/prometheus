@@ -62,10 +62,6 @@ jobs:
   #         path: promtool
   test_windows:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: /go/src/github.com/prometheus/prometheus
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
