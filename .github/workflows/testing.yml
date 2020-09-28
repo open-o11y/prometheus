@@ -10,30 +10,31 @@ on:
 jobs:
 
   test:
+    runs-on: ubuntu-latest
     container:
       image: circleci/golang:1.15-node
     steps:
-      - name: Setup file system permissions
+      - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: checkout repo
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
-      - name: restore go v1 cache
-        uses: actions/cache@v2
+      - name: cache Go modules
+        uses: actions/cache@preview
         with:
           path: ~/go/pkg/mod
-          key: v1-{{ arch }}-{{ checksum "go.sum"  }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-
-      # - name: v3-npm-deps yarnlock
-      #   uses: actions/cache@v2
-      #   with:
-      #     key: 'v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}'
-      # - name: v3-npm-deps
-      #   uses: actions/cache@v2
-      #   with:
-      #     key: 'v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}'
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      - name: v3-npm-deps yarnlock
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}
+          restore-keys: v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}
       # - run: make
       #   env: 
       #     GOGC: "20"
