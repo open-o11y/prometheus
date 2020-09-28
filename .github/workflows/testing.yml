@@ -17,7 +17,8 @@ jobs:
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: checkout repo
         uses: actions/checkout@v2
-      # - run: make promu
+      - name: make promu
+      - run: make promu
       # - name: restore v1 cache
       #   uses: actions/cache@v2
       #   with:
