@@ -1,0 +1,24 @@
+name: ci
+
+on: [push]
+  # schedule:
+  # - cron: '0 0 * * *'
+
+jobs:
+  fuzzit_fuzzing:
+    container:
+      image: fuzzitdev/golang:1.12.7-buster
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Fuzzing
+        run: ./fuzzit.sh fuzzing
+  
+  repo_sync:
+    container:
+      image: circleci/golang:1.15-node
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Sync Repository
+        run: ./scripts/sync_repo_files.sh
