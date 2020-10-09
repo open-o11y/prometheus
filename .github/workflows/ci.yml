@@ -14,7 +14,7 @@ jobs:
       - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - name: make promu
         run: make promu
       - name: load go modules cache
@@ -62,7 +62,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - name: "update golang"
         # windows-latest comes with Go 1.14.9, not Go 1.15
         run: choco upgrade -y golang
@@ -84,7 +84,7 @@ jobs:
         working-directory: documentation/prometheus-mixin
     steps:
       - name: checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
       - run: go install -mod=vendor ./cmd/promtool/.
         working-directory: $GITHUB_WORKSPACE
       - run: go install -mod=readonly github.com/google/go-jsonnet/cmd/jsonnet github.com/google/go-jsonnet/cmd/jsonnetfmt github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
@@ -97,6 +97,8 @@ jobs:
     container:
       image: fuzzitdev/golang:1.12.7-buster
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v1
       - name: Install Docker Client
         run: |
           set -x
