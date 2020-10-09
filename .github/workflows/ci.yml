@@ -1,8 +1,6 @@
 name: ci
 
 on:
-  schedule:
-  - cron: '0 0 * * *'
   push:
     branches: [ master ]
   pull_request:
@@ -69,6 +67,34 @@ jobs:
         # windows-latest comes with Go 1.14.9, not Go 1.15
         run: choco upgrade -y golang
         shell: bash
-      - name: change directory to project root
-        run: cd /go/src/github.com/prometheus/prometheus
+      - name: run tests
         shell: bash
+        run: |
+          (cd web/ui && GOOS= GOARCH= go generate -mod=vendor)
+          go test -mod=vendor -vet=off -test.v `go list ./...|grep -Exv "(github.com/prometheus/prometheus/discovery.*|github.com/prometheus/prometheus/config|github.com/prometheus/prometheus/web)"`
+        env:
+          GOGC: "20"
+          GOOPTS: "-p 2 -mod=vendor"
+  test_mixins:
+    runs-on: ubuntu-latest
+    container:
+      image: circleci/golang:1.15-node
+    defaults:
+      run:
+        working-directory: documentation/prometheus-mixin
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - run: go install -mod=vendor ./cmd/promtool/.
+        working-directory: $GITHUB_WORKSPACE
+      - run: go install -mod=readonly github.com/google/go-jsonnet/cmd/jsonnet github.com/google/go-jsonnet/cmd/jsonnetfmt github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+      - run: make clean
+      - run: jb install
+      - run: make
+      - run: git diff --exit-code
+  fuzzit_regression:
+    runs-on: ubuntu-latest
+    container:
+      image: fuzzitdev/golang:1.12.7-buster
+    steps:
+      - run:
