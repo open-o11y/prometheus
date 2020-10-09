@@ -101,7 +101,7 @@ jobs:
       image: fuzzitdev/golang:1.12.7-buster
     steps:
       - name: setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
+        run: chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v1
       - name: Install Docker Client
