@@ -14,20 +14,9 @@ jobs:
       - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: make promu
         run: make promu
-      - name: load go modules cache
-        uses: actions/cache@v2
-        with:
-          path: /home/circleci/go/pkg/mod
-          key: v1-{{ arch }}-{{ checksum "go.sum" }}
-      - name: load yarn cache
-        uses: actions/cache@v2
-        with:
-          path: /home/circleci/.cache/yarn
-          key: v3-npm-deps-{{ checksum "web/ui/react-app/yarn.lock" }}--{{ arch }}-{{ checksum "go.sum"  }}
-          restore-keys: v3-npm-deps--{{ arch }}-{{ checksum "go.sum"  }}
       - run: make
         env:
             # Run garbage collection more aggressively to avoid getting OOMed during the lint phase.
@@ -62,7 +51,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: checkout repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: "update golang"
         # windows-latest comes with Go 1.14.9, not Go 1.15
         run: choco upgrade -y golang
@@ -83,7 +72,7 @@ jobs:
       - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - run: go install -mod=vendor ./cmd/promtool/.
       - run: go install -mod=readonly github.com/google/go-jsonnet/cmd/jsonnet github.com/google/go-jsonnet/cmd/jsonnetfmt github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
         working-directory: documentation/prometheus-mixin
@@ -103,7 +92,7 @@ jobs:
       - name: setup file system permissions
         run: chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Install Docker Client
         run: |
           set -x
