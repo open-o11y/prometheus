@@ -12,7 +12,7 @@ jobs:
       image: circleci/golang:1.15-node
     steps:
       - name: setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v1
       - name: make promu
@@ -79,24 +79,29 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: circleci/golang:1.15-node
-    defaults:
-      run:
-        working-directory: documentation/prometheus-mixin
     steps:
+      - name: setup file system permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v1
       - run: go install -mod=vendor ./cmd/promtool/.
-        working-directory: $GITHUB_WORKSPACE
       - run: go install -mod=readonly github.com/google/go-jsonnet/cmd/jsonnet github.com/google/go-jsonnet/cmd/jsonnetfmt github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+        working-directory: documentation/prometheus-mixin
       - run: make clean
+        working-directory: documentation/prometheus-mixin
       - run: jb install
+        working-directory: documentation/prometheus-mixin
       - run: make
+        working-directory: documentation/prometheus-mixin
       - run: git diff --exit-code
+        working-directory: documentation/prometheus-mixin
   fuzzit_regression:
     runs-on: ubuntu-latest
     container:
       image: fuzzitdev/golang:1.12.7-buster
     steps:
+      - name: setup file system permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v1
       - name: Install Docker Client
