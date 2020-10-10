@@ -34,7 +34,7 @@ jobs:
           curl -s -L https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
           chmod +x /tmp/bin/protoc
-          echo "::add-path::/tmp/bin/"
+          echo "/tmp/bin/" >> $GITHUB_PATH
       - run: make proto
       - run: git diff --exit-code
       - name: prometheus/store_artifact prometheus
