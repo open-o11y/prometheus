@@ -35,6 +35,7 @@ jobs:
           unzip -d /tmp /tmp/protoc.zip
           chmod +x /tmp/bin/protoc
           echo "/tmp/bin/" >> $GITHUB_PATH
+      - run: echo $PATH
       - run: make proto
       - run: git diff --exit-code
       - name: prometheus/store_artifact prometheus
