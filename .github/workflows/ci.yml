@@ -12,19 +12,14 @@ jobs:
       image: circleci/golang:1.15-node
     steps:
       - name: setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: checkout repo
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
       - run: make
         env:
-            # Run garbage collection more aggressively to avoid getting OOMed during the lint phase.
           GOGC: "20"
-          # By default Go uses GOMAXPROCS but a Circle CI executor has many
-          # cores (> 30) while the CPU and RAM resources are throttled. If we
-          # don't limit this to the number of allocated cores, the job is
-          # likely to get OOMed and killed.
           GOOPTS: "-p 2"
           GOMAXPROCS: "2"
       - name: prometheus/check_proto
@@ -34,8 +29,7 @@ jobs:
           curl -s -L https://github.com/protocolbuffers/protobuf/releases/download/v3.12.3/protoc-3.12.3-linux-x86_64.zip > /tmp/protoc.zip
           unzip -d /tmp /tmp/protoc.zip
           chmod +x /tmp/bin/protoc
-          echo "/tmp/bin/" >> $GITHUB_PATH
-      - run: echo $PATH
+          echo "::add-path::/tmp/bin/"
       - run: make proto
       - run: git diff --exit-code
       - name: prometheus/store_artifact prometheus
