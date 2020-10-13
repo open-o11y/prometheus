@@ -109,7 +109,7 @@ jobs:
       image: circleci/golang:1.15-node
     steps:
       - name: setup file system permissions
-        run: chmod -R 777 $GITHUB_WORKSPACE /github /__w/
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v2
       - name: make promu
