@@ -115,8 +115,8 @@ jobs:
       - name: make promu
         run: make promu
       - run: |
-        sudo su
-        promu crossbuild -v
+          sudo su
+          promu crossbuild -v
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
