@@ -105,8 +105,8 @@ jobs:
   #       working-directory: /go/src/github.com/prometheus/prometheus
   build:
     runs-on: ubuntu-latest
-    container:
-      image: circleci/golang:1.15-node
+    # container:
+    #   image: circleci/golang:1.15-node
     steps:
       - name: setup file system permissions
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
@@ -115,13 +115,13 @@ jobs:
       - run: echo "$USER"
       - name: make promu
         run: make promu
-      - name: Install Docker Client
-        run: |
-          set -x
-          VER="17.03.0-ce"
-          curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-          tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-          sudo mv /tmp/docker/* /usr/bin
+      # - name: Install Docker Client
+      #   run: |
+      #     set -x
+      #     VER="17.03.0-ce"
+      #     curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+      #     tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+      #     sudo mv /tmp/docker/* /usr/bin
       - run: |
           promu crossbuild -v
       - name: Persist .build To Workspace
