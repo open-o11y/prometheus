@@ -108,11 +108,8 @@ jobs:
     # container:
     #   image: circleci/golang:1.15-node
     steps:
-      - name: setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v2
-      - run: echo "$USER"
       - name: make promu
         run: make promu
       # - name: Install Docker Client
