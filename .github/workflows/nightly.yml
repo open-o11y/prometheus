@@ -14,12 +14,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Sym Link Expected Path to Workspace
         run: |
-          echo "$GOPATH"
           mkdir -p /go/src/github.com/prometheus/prometheus
-          export GOPATH=/go
           ln -s $GITHUB_WORKSPACE/ /go/src/github.com/prometheus/prometheus
       - name: Fuzzing
         run: ./fuzzit.sh fuzzing
+        working-directory: /go/src/github.com/prometheus/prometheus
   
   repo_sync:
     runs-on: ubuntu-latest
