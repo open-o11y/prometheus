@@ -105,6 +105,8 @@ jobs:
         working-directory: /go/src/github.com/prometheus/prometheus
   build:
     runs-on: ubuntu-latest
+    container:
+      image: circleci/golang:1.15-node
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
