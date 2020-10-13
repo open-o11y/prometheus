@@ -115,13 +115,10 @@ jobs:
       - run: echo "$USER"
       - name: make promu
         run: make promu
+      - run: sudo groupadd docker
       - run: echo "$(sudo usermod -a -G docker ${USER})"
+      - run: su -s ${USER}
       - run: |
-          echo "ME"
-          sudo groupadd docker
-          echo "ME"
-          sudo usermod -a -G docker ${USER}
-          echo "ME"
           su -s ${USER}
           echo "ME"
           promu crossbuild -v
