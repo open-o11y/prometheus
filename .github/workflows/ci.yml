@@ -121,7 +121,7 @@ jobs:
       #     tar -xz -C /tmp -f /tmp/docker-$VER.tgz
       #     sudo mv /tmp/docker/* /usr/bin
       - run: echo $GITHUB_PATH
-      - run: promu crossbuild -v
+      - run: /home/runner/go/bin/promu crossbuild -v
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
