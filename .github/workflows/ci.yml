@@ -114,7 +114,9 @@ jobs:
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
-      - run: sudo promu crossbuild -v
+      - run: |
+        sudo su
+        promu crossbuild -v
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
