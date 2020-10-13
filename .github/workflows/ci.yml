@@ -120,8 +120,8 @@ jobs:
       #     curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
       #     tar -xz -C /tmp -f /tmp/docker-$VER.tgz
       #     sudo mv /tmp/docker/* /usr/bin
-      - run: |
-          promu crossbuild -v
+      - run: echo $GITHUB_PATH
+      - run: promu crossbuild -v
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
