@@ -115,17 +115,15 @@ jobs:
       - run: echo "$USER"
       - name: make promu
         run: make promu
-      - run: sudo groupadd docker
-      - run: echo "$(sudo usermod -a -G docker ${USER})"
-      - run: su -s ${USER}
+      - name: Install Docker Client
+        run: |
+          set -x
+          VER="17.03.0-ce"
+          curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+          tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+          mv /tmp/docker/* /usr/bin
       - run: |
-        sudo systemctl daemon-reload
-        sudo systemctl restart docker
-      - run: |
-          su -s ${USER}
-          echo "ME"
           promu crossbuild -v
-          echo "ME"
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
