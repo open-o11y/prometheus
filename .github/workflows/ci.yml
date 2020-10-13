@@ -112,6 +112,7 @@ jobs:
         uses: actions/checkout@v2
       - name: make promu
         run: make promu
+      - run: echo "/home/runner/go/bin/promu" >> $GITHUB_PATH
       # - name: Install Docker Client
       #   run: |
       #     set -x
