@@ -112,13 +112,19 @@ jobs:
         run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - name: checkout repo
         uses: actions/checkout@v2
+      - run: echo "$USER"
       - name: make promu
         run: make promu
       - run: |
+          echo "ME"
           sudo groupadd docker
+          echo "ME"
           sudo usermod -aG docker ${USER}
+          echo "ME"
           su -s ${USER}
+          echo "ME"
           promu crossbuild -v
+          echo "ME"
       - name: Persist .build To Workspace
         uses: actions/upload-artifact@v2
         with:
