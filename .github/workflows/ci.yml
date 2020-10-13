@@ -119,6 +119,9 @@ jobs:
       - run: echo "$(sudo usermod -a -G docker ${USER})"
       - run: su -s ${USER}
       - run: |
+        sudo systemctl daemon-reload
+        sudo systemctl restart docker
+      - run: |
           su -s ${USER}
           echo "ME"
           promu crossbuild -v
