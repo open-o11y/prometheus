@@ -103,5 +103,18 @@ jobs:
       - name: Fuzzing
         run: ./fuzzit.sh local-regression
         working-directory: /go/src/github.com/prometheus/prometheus
-
-
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup file system permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
+      - name: checkout repo
+        uses: actions/checkout@v2
+      - name: make promu
+        run: make promu
+      - run: promu crossbuild -v
+      - name: Persist .build To Workspace
+        uses: actions/upload-artifact@v2
+        with:
+          name: .build
+          path: .build
