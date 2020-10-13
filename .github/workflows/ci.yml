@@ -108,8 +108,6 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
-      - name: setup file system permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
       - name: make promu
         run: make promu
       - run: promu crossbuild -v
