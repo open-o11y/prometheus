@@ -1,0 +1,38 @@
+name: nightly
+on:
+  schedule:
+  - cron: '0 0 * * *'
+
+jobs:
+  fuzzit_fuzzing:
+    runs-on: ubuntu-latest
+    container:
+      image: fuzzitdev/golang:1.12.7-buster
+    steps:
+      - name: Setup File System Permissions
+        run: chmod -R 777 $GITHUB_WORKSPACE /github /__w/
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Sym Link Expected Path to Workspace
+        run: |
+          mkdir -p /go/src/github.com/prometheus/prometheus
+          ln -s $GITHUB_WORKSPACE/* /go/src/github.com/prometheus/prometheus
+      - name: Fuzzing
+        run: ./fuzzit.sh fuzzing
+        env:
+          FUZZIT_API_KEY: ${{ secrets.FUZZIT_API_KEY }}
+        working-directory: /go/src/github.com/prometheus/prometheus
+  
+  repo_sync:
+    runs-on: ubuntu-latest
+    container:
+      image: circleci/golang:1.15-node
+    steps:
+      - name: Setup File System Permissions
+        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/_temp
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Sync Repository
+        run: ./scripts/sync_repo_files.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
