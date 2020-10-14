@@ -88,7 +88,7 @@ jobs:
       image: fuzzitdev/golang:1.12.7-buster
     steps:
       - name: Permission Setup
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE /github /__w/
+        run: chmod -R 777 $GITHUB_WORKSPACE /github /__w/
       - run: echo "$(GOPATH)"
       - name: Checkout Repo
         uses: actions/checkout@v2
